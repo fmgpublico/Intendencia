@@ -1,5 +1,3 @@
-h1. adfasd
-
 # Obtener un token de acceso.
 
 curl -X POST "http://localhost:9090/realms/intendencia/protocol/openid-connect/token" --header "Content-Type: application/x-www-form-urlencoded" --data-urlencode "grant_type=password" --data-urlencode "client_id=intendencia" --data-urlencode "client_secret=7ZnfuQRWyUTgmlo3kfbTioBVyRLuuCnh" --data-urlencode "username=intendencia1" --data-urlencode "password=Cgb.12345"
