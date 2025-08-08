@@ -1,1 +1,294 @@
-# Intendencia
+h1. adfasd
+
+# Obtener un token de acceso.
+
+curl -X POST "http://localhost:9090/realms/intendencia/protocol/openid-connect/token" --header "Content-Type: application/x-www-form-urlencoded" --data-urlencode "grant_type=password" --data-urlencode "client_id=intendencia" --data-urlencode "client_secret=7ZnfuQRWyUTgmlo3kfbTioBVyRLuuCnh" --data-urlencode "username=intendencia1" --data-urlencode "password=Cgb.12345"
+
+
+# Refrescar un token de acceso
+
+Se utiliza el parámetro de la petición "grant_type=refresh_token".
+En el parámetro de la petición "refresh_token" se pasa el token de refresco.
+
+curl -X POST "http://localhost:9090/realms/intendencia/protocol/openid-connect/token" --header "Content-Type: application/x-www-form-urlencoded" --data-urlencode "grant_type=refresh_token" --data-urlencode "client_id=intendencia" --data-urlencode "client_secret=7ZnfuQRWyUTgmlo3kfbTioBVyRLuuCnh" --data-urlencode "refresh_token=eyJhbGciOiJIUzUxMiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJmYjdlNmZhOC0wM2Y0LTQwMWYtODBiOS04YmVkODcyYmUyZGIifQ.eyJleHAiOjE3NTQ2MzgzMDYsImlhdCI6MTc1NDYzNjUwNiwianRpIjoiNDMyMjgxNjQtODBiMC00MGY0LWE2MzctZWRjMDUzMmM5NDhjIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo5MDkwL3JlYWxtcy9pbnRlbmRlbmNpYSIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6OTA5MC9yZWFsbXMvaW50ZW5kZW5jaWEiLCJzdWIiOiI2Y2E2YmU2Mi1lYWQyLTRiZTYtOWY3Mi0zOGUwYzU5YTM5NzYiLCJ0eXAiOiJSZWZyZXNoIiwiYXpwIjoiaW50ZW5kZW5jaWEiLCJzaWQiOiJmOWQ1NTZkZS1mM2U3LTQ0MDQtYjI3MS02Yjg5MjY3NTg4M2YiLCJzY29wZSI6ImJhc2ljIGVtYWlsIHNlcnZpY2VfYWNjb3VudCBhY3Igd2ViLW9yaWdpbnMgcHJvZmlsZSByb2xlcyJ9.EQxlUxaXZPAtj9BOYYbjaf_xsNsjlxKWAzQdrNqALCqj2ZNmGoe45IS8CFu5bzIicLdftGLLJnmyFeeD6QTUSg"
+
+
+# Obtener el estado de un token de acceso o de refresco
+
+En el parámetro de la petición "token" se puede poner un token de acceso o uno de refresco.
+
+curl -X POST "http://localhost:9090/realms/intendencia/protocol/openid-connect/token/introspect" --header "Content-Type: application/x-www-form-urlencoded" --data-urlencode "grant_type=password" --data-urlencode "client_id=intendencia" --data-urlencode "client_secret=7ZnfuQRWyUTgmlo3kfbTioBVyRLuuCnh" --data-urlencode "username=intendencia1" --data-urlencode "password=Cgb.12345" --data-urlencode "token=eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJpQmJCNWdxbWI2RGNSY0VCZUNDMkNSeUFwbkhQczZVVFo0Q1k3emlmTnV3In0.eyJleHAiOjE3NTQ2MzY4MDYsImlhdCI6MTc1NDYzNjUwNiwianRpIjoib25ydHJvOmQ3NGYxYjkzLTk5ZTAtNGM5OC05MTZhLTkzOTZhZmM1MTEyYyIsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6OTA5MC9yZWFsbXMvaW50ZW5kZW5jaWEiLCJhdWQiOiJhY2NvdW50Iiwic3ViIjoiNmNhNmJlNjItZWFkMi00YmU2LTlmNzItMzhlMGM1OWEzOTc2IiwidHlwIjoiQmVhcmVyIiwiYXpwIjoiaW50ZW5kZW5jaWEiLCJzaWQiOiJmOWQ1NTZkZS1mM2U3LTQ0MDQtYjI3MS02Yjg5MjY3NTg4M2YiLCJhY3IiOiIxIiwiYWxsb3dlZC1vcmlnaW5zIjpbImh0dHA6Ly9sb2NhbGhvc3Q6ODA4MiJdLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsib2ZmbGluZV9hY2Nlc3MiLCJ1bWFfYXV0aG9yaXphdGlvbiIsImRlZmF1bHQtcm9sZXMtaW50ZW5kZW5jaWEiXX0sInJlc291cmNlX2FjY2VzcyI6eyJhY2NvdW50Ijp7InJvbGVzIjpbIm1hbmFnZS1hY2NvdW50IiwibWFuYWdlLWFjY291bnQtbGlua3MiLCJ2aWV3LXByb2ZpbGUiXX19LCJzY29wZSI6ImVtYWlsIHByb2ZpbGUiLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwicHJlZmVycmVkX3VzZXJuYW1lIjoiaW50ZW5kZW5jaWExIiwiZW1haWwiOiJmbWFydGluQGVzbGEuY29tIn0.PF4wjqPiqeafwzzlsRwIWNYe8xQT99Cc4XIkDLGen2UOifDhHkOhk6EU9weH-a7mo9WUxIGgFI74JxWD6jUFibYz6jmmoVz9RGDBYNru6tnUm-0qT6dtO1qFM7rT6XZuGC4P2x95MvXbc8zDU1obP9vhlykBmofcNMEECrOnUgzgikW_HrfhtEYOQimNeAemyvN8BdWdDz4FP7tsLFePRJgymfHW5_h95EpppXRMDoBirq5zQ1UHvs8__bwNRuUp-L7AjWOrOhAOUzFHF5kQu-dyPR8px05Jd0kY-zVZNL9cMfme99L09PTa8Kf7zA4EeLgAHfGeqEvxmZsfR8u35Q"
+
+curl -X POST "http://localhost:9090/realms/intendencia/protocol/openid-connect/token/introspect" --header "Content-Type: application/x-www-form-urlencoded" --data-urlencode "grant_type=password" --data-urlencode "client_id=intendencia" --data-urlencode "client_secret=7ZnfuQRWyUTgmlo3kfbTioBVyRLuuCnh" --data-urlencode "username=intendencia1" --data-urlencode "password=Cgb.12345" --data-urlencode "token=eyJhbGciOiJIUzUxMiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJmYjdlNmZhOC0wM2Y0LTQwMWYtODBiOS04YmVkODcyYmUyZGIifQ.eyJleHAiOjE3NTQ2MzgzMDYsImlhdCI6MTc1NDYzNjUwNiwianRpIjoiNDMyMjgxNjQtODBiMC00MGY0LWE2MzctZWRjMDUzMmM5NDhjIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo5MDkwL3JlYWxtcy9pbnRlbmRlbmNpYSIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6OTA5MC9yZWFsbXMvaW50ZW5kZW5jaWEiLCJzdWIiOiI2Y2E2YmU2Mi1lYWQyLTRiZTYtOWY3Mi0zOGUwYzU5YTM5NzYiLCJ0eXAiOiJSZWZyZXNoIiwiYXpwIjoiaW50ZW5kZW5jaWEiLCJzaWQiOiJmOWQ1NTZkZS1mM2U3LTQ0MDQtYjI3MS02Yjg5MjY3NTg4M2YiLCJzY29wZSI6ImJhc2ljIGVtYWlsIHNlcnZpY2VfYWNjb3VudCBhY3Igd2ViLW9yaWdpbnMgcHJvZmlsZSByb2xlcyJ9.EQxlUxaXZPAtj9BOYYbjaf_xsNsjlxKWAzQdrNqALCqj2ZNmGoe45IS8CFu5bzIicLdftGLLJnmyFeeD6QTUSg"
+
+Si el token no está activo devuelve:
+
+{"active":false}
+
+Si está activo devuelve información del token:
+
+{
+	"exp": 1754638306,
+	"iat": 1754636506,
+	"jti": "43228164-80b0-40f4-a637-edc0532c948c",
+	"iss": "http://localhost:9090/realms/intendencia",
+	"aud": [
+		"http://localhost:9090/realms/intendencia",
+		"account"
+	],
+	"sub": "6ca6be62-ead2-4be6-9f72-38e0c59a3976",
+	"typ": "Refresh",
+	"azp": "intendencia",
+	"sid": "f9d556de-f3e7-4404-b271-6b892675883f",
+	"acr": "1",
+	"allowed-origins": [
+		"http://localhost:8082"
+	],
+	"realm_access": {
+		"roles": [
+			"offline_access",
+			"uma_authorization",
+			"default-roles-intendencia"
+		]
+	},
+	"resource_access": {
+		"account": {
+			"roles": [
+				"manage-account",
+				"manage-account-links",
+				"view-profile"
+			]
+		}
+	},
+	"scope": "basic email service_account acr web-origins profile roles",
+	"email_verified": true,
+	"preferred_username": "intendencia1",
+	"email": "fmartin@esla.com",
+	"client_id": "intendencia",
+	"username": "intendencia1",
+	"token_type": "Refresh",
+	"active": true
+}
+
+
+===========================================================================
+curl -X POST "http://localhost:9090/realms/intendencia/protocol/openid-connect/certs
+===========================================================================
+
+
+# Revocar un token de acceso o de refresco
+
+POST /revoke HTTP/1.1
+     Host: server.example.com
+     Content-Type: application/x-www-form-urlencoded
+     Authorization: Basic czZCaGRSa3F0MzpnWDFmQmF0M2JW
+
+     token=45ghiukldjahdnhzdauz&token_type_hint=refresh_token
+	
+
+# Hacer una llamada al API REST de intendencia clientes.
+
+curl -i -o - http://localhost:8082/clientes/findAll --header "Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJpQmJCNWdxbWI2RGNSY0VCZUNDMkNSeUFwbkhQczZVVFo0Q1k3emlmTnV3In0.eyJleHAiOjE3NTM5NDcxNzMsImlhdCI6MTc1Mzk0Njg3MywianRpIjoib25ydHJvOjc0NGIxOGQwLWM5ZTQtNDMwNy04NTM4LTVkM2EwMTNhM2MyMyIsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6OTA5MC9yZWFsbXMvaW50ZW5kZW5jaWEiLCJhdWQiOiJhY2NvdW50Iiwic3ViIjoiNmNhNmJlNjItZWFkMi00YmU2LTlmNzItMzhlMGM1OWEzOTc2IiwidHlwIjoiQmVhcmVyIiwiYXpwIjoiaW50ZW5kZW5jaWEiLCJzaWQiOiI3YzY3MGRmMS1iZTgxLTRkMjktYjJmNC1lOTE0MzRhNWJmNTgiLCJhY3IiOiIxIiwiYWxsb3dlZC1vcmlnaW5zIjpbImh0dHA6Ly9sb2NhbGhvc3Q6ODA4MiJdLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsib2ZmbGluZV9hY2Nlc3MiLCJ1bWFfYXV0aG9yaXphdGlvbiIsImRlZmF1bHQtcm9sZXMtaW50ZW5kZW5jaWEiXX0sInJlc291cmNlX2FjY2VzcyI6eyJhY2NvdW50Ijp7InJvbGVzIjpbIm1hbmFnZS1hY2NvdW50IiwibWFuYWdlLWFjY291bnQtbGlua3MiLCJ2aWV3LXByb2ZpbGUiXX19LCJzY29wZSI6ImVtYWlsIHByb2ZpbGUiLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwicHJlZmVycmVkX3VzZXJuYW1lIjoiaW50ZW5kZW5jaWExIiwiZW1haWwiOiJmbWFydGluQGVzbGEuY29tIn0.LW4JCz8Ui_K3TR0F92naTmZUJpkzs97HSUAUWnRjMWnfoANCod9uMVaQ7M0HHQqy_ALIRi3mGmiZq8lfioZ1yshmUDmNa0r8pxTl6ze5FsbMSq9Hc3VBvYGwy6zqV4uLzDLzK7osvhLsUqqKQhCwUO9EAP0kCpkStrYhr5jW4ybOXvMDvOQAv47RdbORGZ08pc6c4fHwfif3l6gGIccU-yUzHxvCL-5veaKWqgP6F6lr3ljR89yg6mI20KXmPpKpzi8Z3iiBebLbTt8iYN5Yjin7vryRNKP5WHLpt5FdDb6QsDHvl7ysx4je7iYBP17XrBT130DCeLG6cO2fX4CgTg"
+
+
+# Comandos para ejecutar la aplicación
+
+Durante el desarrollo, por ejemplo con Visual Studio Code, para arrancar la aplicación se ejecuta:
+npm run dev
+
+Si se quiere construir el proyecto para desplegarlo en producción, se ejecuta:
+npm run build
+
+Crea los recursos en la carpeta dist del proyecto. Se pueden copiar en el Apache para hacerla funcionar. Se copian en la carpeta htdocs.
+
+El Apache local escucha en el puerto 81. La URL es: http://localhost:81
+
+Hay que añadirla a los orígenes permitidos en la configuración de CORS del API REST.
+
+
+
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
+</dependency>
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-security</artifactId>
+</dependency>
+
+En una página dicen que hay que incluir una dependencia del API JOSE para procesar el token JWT en el converter.
+
+
+En https://dzone.com/articles/spring-boot-3-keycloak implementan un converter para el token JWT.
+
+
+
+
+cd C:\Proyectos\Pruebas\intendencia\intendencia.clientes
+
+\Entorno\Maven\apache-maven-3.9.2-JAVA-21\bin\mvn -P postgresql clean package -Dmaven.test.skip=true
+\Entorno\Java\jdk-21\bin\java -jar target\intendencia.clientes-1.0.jar
+\Entorno\Java\jdk-21\bin\java -jar target\intendencia.clientes-1.0.jar --spring.config.location=C:/Proyectos/Pruebas/intendencia/application.properties
+
+\Entorno\Maven\apache-maven-3.9.2-JAVA-21\bin\mvn spring-boot:run -Dspring.profiles.active=postgresql
+
+
+******************************************************************************************************************************************************
+******************************************************************************************************************************************************
+******************************************************************************************************************************************************
+
+curl -X POST "http://localhost:9090/realms/demo/protocol/openid-connect/token" --header "Content-Type: application/x-www-form-urlencoded" --data-urlencode "grant_type=password" --data-urlencode "client_id=demo-app" --data-urlencode "username=test" --data-urlencode "password=Cgb.12345"
+curl -o - -I http://localhost:8080/hello --header "Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJ5NllNNThQcEY3T185ck9pQXYtMDJnTWpvMDFRcEhsQ2p0aGhwdGR3bVV3In0.eyJleHAiOjE3NTMzMzc2NjUsImlhdCI6MTc1MzMzNzM2NSwianRpIjoib25ydHJvOjMwMDBlY2U1LTNiNGUtNDIzNy1hNDEwLTk5NDE0OThkMDIzNSIsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6OTA5MC9yZWFsbXMvZGVtbyIsImF1ZCI6ImFjY291bnQiLCJzdWIiOiJhNTYxYTcxMy1kMjFmLTQ5OWEtODA4ZC00MTE3OTllMWYxZTUiLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJkZW1vLWFwcCIsInNpZCI6IjE2ZjI0ZTAxLTgwMzctNDZmMy04YzJkLWEzN2VjNzA4ZGU0NCIsImFjciI6IjEiLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsib2ZmbGluZV9hY2Nlc3MiLCJ1bWFfYXV0aG9yaXphdGlvbiJdfSwicmVzb3VyY2VfYWNjZXNzIjp7ImFjY291bnQiOnsicm9sZXMiOlsibWFuYWdlLWFjY291bnQiLCJtYW5hZ2UtYWNjb3VudC1saW5rcyIsInZpZXctcHJvZmlsZSJdfX0sInNjb3BlIjoiZW1haWwgcHJvZmlsZSIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwicHJlZmVycmVkX3VzZXJuYW1lIjoidGVzdCJ9.Py-msB7r0JyBUsWbjq_1naS1uRIIQOS-Fy1NFLYoFLPXgUQ81jigb95KiHLVwxqiGvtspX18zTB33SXrAr1P6069XO8uXDf6079DcwXw31Vp0JDykKXYyu3ExYIu9mN_eYycbFJQWi0GE65-UARXcPFDJZyZaLfL_GVRf982gCPHAZY8UDcUKTrGfz7mBM6p7gZNd5CINecmgVQnzYo3bz06G_7igqDr3Del1ELZUityr8YUrtYYjO84guR2HcE9tkVboQcW__1-awRpHiaz7u-iz_Ipn2dzLiZwZMhX-x8QEQfDz4OdqUR6zCSxHClqt3g3RpgWS6nVivV_Em-ggQ"
+curl -o - -I http://localhost:8080/hello --header "Authorization: Bearer eyJhbGciOiJIUzUxMiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICI5YTU4ZGY1Yi0zZjMyLTRmZTktOWIyYy00ZWMxYTEwODExNDMifQ.eyJleHAiOjE3NTMzMzkxNjUsImlhdCI6MTc1MzMzNzM2NSwianRpIjoiNjIzZjIwMWEtZDZiNS00OWU3LTlmNDYtYmMxNjY4ZWM4YjUwIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo5MDkwL3JlYWxtcy9kZW1vIiwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDo5MDkwL3JlYWxtcy9kZW1vIiwic3ViIjoiYTU2MWE3MTMtZDIxZi00OTlhLTgwOGQtNDExNzk5ZTFmMWU1IiwidHlwIjoiUmVmcmVzaCIsImF6cCI6ImRlbW8tYXBwIiwic2lkIjoiMTZmMjRlMDEtODAzNy00NmYzLThjMmQtYTM3ZWM3MDhkZTQ0Iiwic2NvcGUiOiJ3ZWItb3JpZ2lucyBlbWFpbCBiYXNpYyBwcm9maWxlIHJvbGVzIGFjciJ9.n1nirGk2rDD5lDDT-2Oh5pVVGVq7uSS6VwjXTZRxRzJvz-PwGMLndQqRagE2cW-DfBojx8EP0xvKpshNHNjYVQ"
+
+===========================================================================
+	Obtener un token de acceso.
+===========================================================================
+curl -X POST "http://localhost:9090/realms/intendencia/protocol/openid-connect/token" --header "Content-Type: application/x-www-form-urlencoded" --data-urlencode "grant_type=password" --data-urlencode "client_id=intendencia" --data-urlencode "client_secret=7ZnfuQRWyUTgmlo3kfbTioBVyRLuuCnh" --data-urlencode "username=intendencia1" --data-urlencode "password=Cgb.12345"
+
+
+===========================================================================
+	Refrescar un token de acceso
+===========================================================================
+
+Se utiliza el parámetro de la petición "grant_type=refresh_token".
+En el parámetro de la petición "refresh_token" se pasa el token de refresco.
+
+curl -X POST "http://localhost:9090/realms/intendencia/protocol/openid-connect/token" --header "Content-Type: application/x-www-form-urlencoded" --data-urlencode "grant_type=refresh_token" --data-urlencode "client_id=intendencia" --data-urlencode "client_secret=7ZnfuQRWyUTgmlo3kfbTioBVyRLuuCnh" --data-urlencode "refresh_token=eyJhbGciOiJIUzUxMiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJmYjdlNmZhOC0wM2Y0LTQwMWYtODBiOS04YmVkODcyYmUyZGIifQ.eyJleHAiOjE3NTQ2MzgzMDYsImlhdCI6MTc1NDYzNjUwNiwianRpIjoiNDMyMjgxNjQtODBiMC00MGY0LWE2MzctZWRjMDUzMmM5NDhjIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo5MDkwL3JlYWxtcy9pbnRlbmRlbmNpYSIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6OTA5MC9yZWFsbXMvaW50ZW5kZW5jaWEiLCJzdWIiOiI2Y2E2YmU2Mi1lYWQyLTRiZTYtOWY3Mi0zOGUwYzU5YTM5NzYiLCJ0eXAiOiJSZWZyZXNoIiwiYXpwIjoiaW50ZW5kZW5jaWEiLCJzaWQiOiJmOWQ1NTZkZS1mM2U3LTQ0MDQtYjI3MS02Yjg5MjY3NTg4M2YiLCJzY29wZSI6ImJhc2ljIGVtYWlsIHNlcnZpY2VfYWNjb3VudCBhY3Igd2ViLW9yaWdpbnMgcHJvZmlsZSByb2xlcyJ9.EQxlUxaXZPAtj9BOYYbjaf_xsNsjlxKWAzQdrNqALCqj2ZNmGoe45IS8CFu5bzIicLdftGLLJnmyFeeD6QTUSg"
+
+
+===========================================================================
+	Obtener el estado de un token de acceso o de refresco
+===========================================================================
+
+En el parámetro de la petición "token" se puede poner un token de acceso o uno de refresco.
+
+curl -X POST "http://localhost:9090/realms/intendencia/protocol/openid-connect/token/introspect" --header "Content-Type: application/x-www-form-urlencoded" --data-urlencode "grant_type=password" --data-urlencode "client_id=intendencia" --data-urlencode "client_secret=7ZnfuQRWyUTgmlo3kfbTioBVyRLuuCnh" --data-urlencode "username=intendencia1" --data-urlencode "password=Cgb.12345" --data-urlencode "token=eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJpQmJCNWdxbWI2RGNSY0VCZUNDMkNSeUFwbkhQczZVVFo0Q1k3emlmTnV3In0.eyJleHAiOjE3NTQ2MzY4MDYsImlhdCI6MTc1NDYzNjUwNiwianRpIjoib25ydHJvOmQ3NGYxYjkzLTk5ZTAtNGM5OC05MTZhLTkzOTZhZmM1MTEyYyIsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6OTA5MC9yZWFsbXMvaW50ZW5kZW5jaWEiLCJhdWQiOiJhY2NvdW50Iiwic3ViIjoiNmNhNmJlNjItZWFkMi00YmU2LTlmNzItMzhlMGM1OWEzOTc2IiwidHlwIjoiQmVhcmVyIiwiYXpwIjoiaW50ZW5kZW5jaWEiLCJzaWQiOiJmOWQ1NTZkZS1mM2U3LTQ0MDQtYjI3MS02Yjg5MjY3NTg4M2YiLCJhY3IiOiIxIiwiYWxsb3dlZC1vcmlnaW5zIjpbImh0dHA6Ly9sb2NhbGhvc3Q6ODA4MiJdLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsib2ZmbGluZV9hY2Nlc3MiLCJ1bWFfYXV0aG9yaXphdGlvbiIsImRlZmF1bHQtcm9sZXMtaW50ZW5kZW5jaWEiXX0sInJlc291cmNlX2FjY2VzcyI6eyJhY2NvdW50Ijp7InJvbGVzIjpbIm1hbmFnZS1hY2NvdW50IiwibWFuYWdlLWFjY291bnQtbGlua3MiLCJ2aWV3LXByb2ZpbGUiXX19LCJzY29wZSI6ImVtYWlsIHByb2ZpbGUiLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwicHJlZmVycmVkX3VzZXJuYW1lIjoiaW50ZW5kZW5jaWExIiwiZW1haWwiOiJmbWFydGluQGVzbGEuY29tIn0.PF4wjqPiqeafwzzlsRwIWNYe8xQT99Cc4XIkDLGen2UOifDhHkOhk6EU9weH-a7mo9WUxIGgFI74JxWD6jUFibYz6jmmoVz9RGDBYNru6tnUm-0qT6dtO1qFM7rT6XZuGC4P2x95MvXbc8zDU1obP9vhlykBmofcNMEECrOnUgzgikW_HrfhtEYOQimNeAemyvN8BdWdDz4FP7tsLFePRJgymfHW5_h95EpppXRMDoBirq5zQ1UHvs8__bwNRuUp-L7AjWOrOhAOUzFHF5kQu-dyPR8px05Jd0kY-zVZNL9cMfme99L09PTa8Kf7zA4EeLgAHfGeqEvxmZsfR8u35Q"
+
+curl -X POST "http://localhost:9090/realms/intendencia/protocol/openid-connect/token/introspect" --header "Content-Type: application/x-www-form-urlencoded" --data-urlencode "grant_type=password" --data-urlencode "client_id=intendencia" --data-urlencode "client_secret=7ZnfuQRWyUTgmlo3kfbTioBVyRLuuCnh" --data-urlencode "username=intendencia1" --data-urlencode "password=Cgb.12345" --data-urlencode "token=eyJhbGciOiJIUzUxMiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJmYjdlNmZhOC0wM2Y0LTQwMWYtODBiOS04YmVkODcyYmUyZGIifQ.eyJleHAiOjE3NTQ2MzgzMDYsImlhdCI6MTc1NDYzNjUwNiwianRpIjoiNDMyMjgxNjQtODBiMC00MGY0LWE2MzctZWRjMDUzMmM5NDhjIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo5MDkwL3JlYWxtcy9pbnRlbmRlbmNpYSIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6OTA5MC9yZWFsbXMvaW50ZW5kZW5jaWEiLCJzdWIiOiI2Y2E2YmU2Mi1lYWQyLTRiZTYtOWY3Mi0zOGUwYzU5YTM5NzYiLCJ0eXAiOiJSZWZyZXNoIiwiYXpwIjoiaW50ZW5kZW5jaWEiLCJzaWQiOiJmOWQ1NTZkZS1mM2U3LTQ0MDQtYjI3MS02Yjg5MjY3NTg4M2YiLCJzY29wZSI6ImJhc2ljIGVtYWlsIHNlcnZpY2VfYWNjb3VudCBhY3Igd2ViLW9yaWdpbnMgcHJvZmlsZSByb2xlcyJ9.EQxlUxaXZPAtj9BOYYbjaf_xsNsjlxKWAzQdrNqALCqj2ZNmGoe45IS8CFu5bzIicLdftGLLJnmyFeeD6QTUSg"
+
+Si el token no está activo devuelve:
+
+{"active":false}
+
+Si está activo devuelve información del token:
+
+{
+	"exp": 1754638306,
+	"iat": 1754636506,
+	"jti": "43228164-80b0-40f4-a637-edc0532c948c",
+	"iss": "http://localhost:9090/realms/intendencia",
+	"aud": [
+		"http://localhost:9090/realms/intendencia",
+		"account"
+	],
+	"sub": "6ca6be62-ead2-4be6-9f72-38e0c59a3976",
+	"typ": "Refresh",
+	"azp": "intendencia",
+	"sid": "f9d556de-f3e7-4404-b271-6b892675883f",
+	"acr": "1",
+	"allowed-origins": [
+		"http://localhost:8082"
+	],
+	"realm_access": {
+		"roles": [
+			"offline_access",
+			"uma_authorization",
+			"default-roles-intendencia"
+		]
+	},
+	"resource_access": {
+		"account": {
+			"roles": [
+				"manage-account",
+				"manage-account-links",
+				"view-profile"
+			]
+		}
+	},
+	"scope": "basic email service_account acr web-origins profile roles",
+	"email_verified": true,
+	"preferred_username": "intendencia1",
+	"email": "fmartin@esla.com",
+	"client_id": "intendencia",
+	"username": "intendencia1",
+	"token_type": "Refresh",
+	"active": true
+}
+
+
+===========================================================================
+curl -X POST "http://localhost:9090/realms/intendencia/protocol/openid-connect/certs
+===========================================================================
+
+
+===========================================================================
+	Revocar un token de acceso o de refresco
+===========================================================================
+
+POST /revoke HTTP/1.1
+     Host: server.example.com
+     Content-Type: application/x-www-form-urlencoded
+     Authorization: Basic czZCaGRSa3F0MzpnWDFmQmF0M2JW
+
+     token=45ghiukldjahdnhzdauz&token_type_hint=refresh_token
+	
+
+===========================================================================
+	Hacer una llamada al API REST de intendencia clientes.
+===========================================================================
+
+curl -i -o - http://localhost:8082/clientes/findAll --header "Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJpQmJCNWdxbWI2RGNSY0VCZUNDMkNSeUFwbkhQczZVVFo0Q1k3emlmTnV3In0.eyJleHAiOjE3NTM5NDcxNzMsImlhdCI6MTc1Mzk0Njg3MywianRpIjoib25ydHJvOjc0NGIxOGQwLWM5ZTQtNDMwNy04NTM4LTVkM2EwMTNhM2MyMyIsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6OTA5MC9yZWFsbXMvaW50ZW5kZW5jaWEiLCJhdWQiOiJhY2NvdW50Iiwic3ViIjoiNmNhNmJlNjItZWFkMi00YmU2LTlmNzItMzhlMGM1OWEzOTc2IiwidHlwIjoiQmVhcmVyIiwiYXpwIjoiaW50ZW5kZW5jaWEiLCJzaWQiOiI3YzY3MGRmMS1iZTgxLTRkMjktYjJmNC1lOTE0MzRhNWJmNTgiLCJhY3IiOiIxIiwiYWxsb3dlZC1vcmlnaW5zIjpbImh0dHA6Ly9sb2NhbGhvc3Q6ODA4MiJdLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsib2ZmbGluZV9hY2Nlc3MiLCJ1bWFfYXV0aG9yaXphdGlvbiIsImRlZmF1bHQtcm9sZXMtaW50ZW5kZW5jaWEiXX0sInJlc291cmNlX2FjY2VzcyI6eyJhY2NvdW50Ijp7InJvbGVzIjpbIm1hbmFnZS1hY2NvdW50IiwibWFuYWdlLWFjY291bnQtbGlua3MiLCJ2aWV3LXByb2ZpbGUiXX19LCJzY29wZSI6ImVtYWlsIHByb2ZpbGUiLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwicHJlZmVycmVkX3VzZXJuYW1lIjoiaW50ZW5kZW5jaWExIiwiZW1haWwiOiJmbWFydGluQGVzbGEuY29tIn0.LW4JCz8Ui_K3TR0F92naTmZUJpkzs97HSUAUWnRjMWnfoANCod9uMVaQ7M0HHQqy_ALIRi3mGmiZq8lfioZ1yshmUDmNa0r8pxTl6ze5FsbMSq9Hc3VBvYGwy6zqV4uLzDLzK7osvhLsUqqKQhCwUO9EAP0kCpkStrYhr5jW4ybOXvMDvOQAv47RdbORGZ08pc6c4fHwfif3l6gGIccU-yUzHxvCL-5veaKWqgP6F6lr3ljR89yg6mI20KXmPpKpzi8Z3iiBebLbTt8iYN5Yjin7vryRNKP5WHLpt5FdDb6QsDHvl7ysx4je7iYBP17XrBT130DCeLG6cO2fX4CgTg"
+
+
+===========================================================================
+	Comandos para ejecutar la aplicación
+===========================================================================
+
+Durante el desarrollo, por ejemplo con Visual Studio Code, para arrancar la aplicación se ejecuta:
+npm run dev
+
+Si se quiere construir el proyecto para desplegarlo en producción, se ejecuta:
+npm run build
+
+Crea los recursos en la carpeta dist del proyecto. Se pueden copiar en el Apache para hacerla funcionar. Se copian en la carpeta htdocs.
+
+El Apache local escucha en el puerto 81. La URL es: http://localhost:81
+
+Hay que añadirla a los orígenes permitidos en la configuración de CORS del API REST.
+
+
+
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
+</dependency>
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-security</artifactId>
+</dependency>
+
+En una página dicen que hay que incluir una dependencia del API JOSE para procesar el token JWT en el converter.
+
+
+En https://dzone.com/articles/spring-boot-3-keycloak implementan un converter para el token JWT.
+
+
+
+
+cd C:\Proyectos\Pruebas\intendencia\intendencia.clientes
+
+\Entorno\Maven\apache-maven-3.9.2-JAVA-21\bin\mvn -P postgresql clean package -Dmaven.test.skip=true
+\Entorno\Java\jdk-21\bin\java -jar target\intendencia.clientes-1.0.jar
+\Entorno\Java\jdk-21\bin\java -jar target\intendencia.clientes-1.0.jar --spring.config.location=C:/Proyectos/Pruebas/intendencia/application.properties
+
+\Entorno\Maven\apache-maven-3.9.2-JAVA-21\bin\mvn spring-boot:run -Dspring.profiles.active=postgresql
+
+
+******************************************************************************************************************************************************
+******************************************************************************************************************************************************
+******************************************************************************************************************************************************
+
+curl -X POST "http://localhost:9090/realms/demo/protocol/openid-connect/token" --header "Content-Type: application/x-www-form-urlencoded" --data-urlencode "grant_type=password" --data-urlencode "client_id=demo-app" --data-urlencode "username=test" --data-urlencode "password=Cgb.12345"
+curl -o - -I http://localhost:8080/hello --header "Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJ5NllNNThQcEY3T185ck9pQXYtMDJnTWpvMDFRcEhsQ2p0aGhwdGR3bVV3In0.eyJleHAiOjE3NTMzMzc2NjUsImlhdCI6MTc1MzMzNzM2NSwianRpIjoib25ydHJvOjMwMDBlY2U1LTNiNGUtNDIzNy1hNDEwLTk5NDE0OThkMDIzNSIsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6OTA5MC9yZWFsbXMvZGVtbyIsImF1ZCI6ImFjY291bnQiLCJzdWIiOiJhNTYxYTcxMy1kMjFmLTQ5OWEtODA4ZC00MTE3OTllMWYxZTUiLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJkZW1vLWFwcCIsInNpZCI6IjE2ZjI0ZTAxLTgwMzctNDZmMy04YzJkLWEzN2VjNzA4ZGU0NCIsImFjciI6IjEiLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsib2ZmbGluZV9hY2Nlc3MiLCJ1bWFfYXV0aG9yaXphdGlvbiJdfSwicmVzb3VyY2VfYWNjZXNzIjp7ImFjY291bnQiOnsicm9sZXMiOlsibWFuYWdlLWFjY291bnQiLCJtYW5hZ2UtYWNjb3VudC1saW5rcyIsInZpZXctcHJvZmlsZSJdfX0sInNjb3BlIjoiZW1haWwgcHJvZmlsZSIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwicHJlZmVycmVkX3VzZXJuYW1lIjoidGVzdCJ9.Py-msB7r0JyBUsWbjq_1naS1uRIIQOS-Fy1NFLYoFLPXgUQ81jigb95KiHLVwxqiGvtspX18zTB33SXrAr1P6069XO8uXDf6079DcwXw31Vp0JDykKXYyu3ExYIu9mN_eYycbFJQWi0GE65-UARXcPFDJZyZaLfL_GVRf982gCPHAZY8UDcUKTrGfz7mBM6p7gZNd5CINecmgVQnzYo3bz06G_7igqDr3Del1ELZUityr8YUrtYYjO84guR2HcE9tkVboQcW__1-awRpHiaz7u-iz_Ipn2dzLiZwZMhX-x8QEQfDz4OdqUR6zCSxHClqt3g3RpgWS6nVivV_Em-ggQ"
+curl -o - -I http://localhost:8080/hello --header "Authorization: Bearer eyJhbGciOiJIUzUxMiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICI5YTU4ZGY1Yi0zZjMyLTRmZTktOWIyYy00ZWMxYTEwODExNDMifQ.eyJleHAiOjE3NTMzMzkxNjUsImlhdCI6MTc1MzMzNzM2NSwianRpIjoiNjIzZjIwMWEtZDZiNS00OWU3LTlmNDYtYmMxNjY4ZWM4YjUwIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo5MDkwL3JlYWxtcy9kZW1vIiwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDo5MDkwL3JlYWxtcy9kZW1vIiwic3ViIjoiYTU2MWE3MTMtZDIxZi00OTlhLTgwOGQtNDExNzk5ZTFmMWU1IiwidHlwIjoiUmVmcmVzaCIsImF6cCI6ImRlbW8tYXBwIiwic2lkIjoiMTZmMjRlMDEtODAzNy00NmYzLThjMmQtYTM3ZWM3MDhkZTQ0Iiwic2NvcGUiOiJ3ZWItb3JpZ2lucyBlbWFpbCBiYXNpYyBwcm9maWxlIHJvbGVzIGFjciJ9.n1nirGk2rDD5lDDT-2Oh5pVVGVq7uSS6VwjXTZRxRzJvz-PwGMLndQqRagE2cW-DfBojx8EP0xvKpshNHNjYVQ"
