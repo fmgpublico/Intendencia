@@ -12,7 +12,7 @@ En el parámetro de la petición "refresh_token" se pasa el token de refresco.
 ```
 curl -X POST "http://localhost:9090/realms/intendencia/protocol/openid-connect/token" --header "Content-Type: application/x-www-form-urlencoded" --data-urlencode "grant_type=refresh_token" --data-urlencode "client_id=intendencia" --data-urlencode "client_secret=7ZnfuQRWyUTgmlo3kfbTioBVyRLuuCnh" --data-urlencode "refresh_token=eyJhbGciOiJIUzUxMiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJmYjdlNmZhOC0wM2Y0LTQwMWYtODBiOS04YmVkODcyYmUyZGIifQ.eyJleHAiOjE3NTQ2MzgzMDYsImlhdCI6MTc1NDYzNjUwNiwianRpIjoiNDMyMjgxNjQtODBiMC00MGY0LWE2MzctZWRjMDUzMmM5NDhjIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo5MDkwL3JlYWxtcy9pbnRlbmRlbmNpYSIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6OTA5MC9yZWFsbXMvaW50ZW5kZW5jaWEiLCJzdWIiOiI2Y2E2YmU2Mi1lYWQyLTRiZTYtOWY3Mi0zOGUwYzU5YTM5NzYiLCJ0eXAiOiJSZWZyZXNoIiwiYXpwIjoiaW50ZW5kZW5jaWEiLCJzaWQiOiJmOWQ1NTZkZS1mM2U3LTQ0MDQtYjI3MS02Yjg5MjY3NTg4M2YiLCJzY29wZSI6ImJhc2ljIGVtYWlsIHNlcnZpY2VfYWNjb3VudCBhY3Igd2ViLW9yaWdpbnMgcHJvZmlsZSByb2xlcyJ9.EQxlUxaXZPAtj9BOYYbjaf_xsNsjlxKWAzQdrNqALCqj2ZNmGoe45IS8CFu5bzIicLdftGLLJnmyFeeD6QTUSg"
 ```
-
+Devuelve un nuevo token de acceso.
 
 # Obtener el estado de un token de acceso o de refresco
 
@@ -79,10 +79,13 @@ Si está activo devuelve información del token:
 }
 ```
 
-===========================================================================
-curl -X POST "http://localhost:9090/realms/intendencia/protocol/openid-connect/certs
-===========================================================================
+# Obtener las claves públicas habilitadas por el realm
 
+Se usan por ejemplo para validar tokens cifrados.
+
+```
+curl -X POST "http://localhost:9090/realms/intendencia/protocol/openid-connect/certs
+```
 
 # Revocar un token de acceso o de refresco
 
@@ -114,11 +117,10 @@ Si se quiere construir el proyecto para desplegarlo en producción, se ejecuta:
 npm run build
 ```
 
-Crea los recursos en la carpeta dist del proyecto. Se pueden copiar en el Apache para hacerla funcionar. Se copian en la carpeta htdocs.
+Crea los recursos en la carpeta dist del proyecto. Se pueden copiar en el Apache para hacerla funcionar. Se copian por ejemplo en la carpeta htdocs.
 
 El Apache local escucha en el puerto 81. La URL es: http://localhost:81
-
-Hay que añadirla a los orígenes permitidos en la configuración de CORS del API REST.
+Esta URL hay que añadirla a los orígenes permitidos en la configuración de CORS del API REST.
 
 
 
