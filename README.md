@@ -142,11 +142,25 @@ En https://dzone.com/articles/spring-boot-3-keycloak implementan un converter pa
 
 cd C:\Proyectos\Pruebas\intendencia\intendencia.clientes
 
+- Generación del JAR:
+```
 \Entorno\Maven\apache-maven-3.9.2-JAVA-21\bin\mvn -P postgresql clean package -Dmaven.test.skip=true
-\Entorno\Java\jdk-21\bin\java -jar target\intendencia.clientes-1.0.jar
-\Entorno\Java\jdk-21\bin\java -jar target\intendencia.clientes-1.0.jar --spring.config.location=C:/Proyectos/Pruebas/intendencia/application.properties
+```
 
+- Ejecución del del JAR:
+```
+\Entorno\Java\jdk-21\bin\java -jar target\intendencia.clientes-1.0.jar
+```
+
+- Ejecución del del JAR utilizando un fichero application.properties externo al JAR:
+```
+\Entorno\Java\jdk-21\bin\java -jar target\intendencia.clientes-1.0.jar --spring.config.location=C:/Proyectos/Pruebas/intendencia/application.properties
+```
+
+- Ejecución del del JAR con el plugin de Spring Boot:
+```
 \Entorno\Maven\apache-maven-3.9.2-JAVA-21\bin\mvn spring-boot:run -Dspring.profiles.active=postgresql
+```
 
 # Código de la aplicación
 
