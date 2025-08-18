@@ -98,6 +98,20 @@ POST /revoke HTTP/1.1
      token=45ghiukldjahdnhzdauz&token_type_hint=refresh_token
 ```
 
+# Obtener información del usuario autenticado
+
+Para poder obtener la información, cuando se obtiene el token de acceso hay que especificar el scope openid:
+
+```
+curl -X POST "http://localhost:9090/realms/intendencia/protocol/openid-connect/token" --header "Content-Type: application/x-www-form-urlencoded" --data-urlencode "grant_type=password" --data-urlencode "client_id=intendencia" --data-urlencode "client_secret=7ZnfuQRWyUTgmlo3kfbTioBVyRLuuCnh" --data-urlencode "username=intendencia1" --data-urlencode "password=Cgb.12345" --data-urlencode "scope=openid"
+```
+
+Y con el token de acceso que se obtiene se puede obtener la información del usuario autenticado:
+
+```
+curl -X GET -i -o - "http://localhost:9090/realms/intendencia/protocol/openid-connect/userinfo" --header "Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJpQmJCNWdxbWI2RGNSY0VCZUNDMkNSeUFwbkhQczZVVFo0Q1k3emlmTnV3In0.eyJleHAiOjE3NTU1MDQyNjMsImlhdCI6MTc1NTUwMzk2MywianRpIjoib25ydHJvOmNkYTYwY2I3LWU3YTgtNDY1NS1iZGExLTNhNmU4OGEwYWI0YiIsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6OTA5MC9yZWFsbXMvaW50ZW5kZW5jaWEiLCJhdWQiOiJhY2NvdW50Iiwic3ViIjoiNmNhNmJlNjItZWFkMi00YmU2LTlmNzItMzhlMGM1OWEzOTc2IiwidHlwIjoiQmVhcmVyIiwiYXpwIjoiaW50ZW5kZW5jaWEiLCJzaWQiOiI0NTZjY2U0OC00YTNkLTRjNGItOGI2MS1jMWQ5MzAyYTNlNWMiLCJhY3IiOiIxIiwiYWxsb3dlZC1vcmlnaW5zIjpbIioiXSwicmVhbG1fYWNjZXNzIjp7InJvbGVzIjpbIm9mZmxpbmVfYWNjZXNzIiwidW1hX2F1dGhvcml6YXRpb24iLCJkZWZhdWx0LXJvbGVzLWludGVuZGVuY2lhIl19LCJyZXNvdXJjZV9hY2Nlc3MiOnsiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl19fSwic2NvcGUiOiJvcGVuaWQgZW1haWwgcHJvZmlsZSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJpbnRlbmRlbmNpYTEiLCJlbWFpbCI6ImZtYXJ0aW5AZXNsYS5jb20ifQ.kEFvcF6W6lUj7IGqiiNp5DOZVoDuzhI6X19EDokEcQWyMuBZLOpbbGmYTpXBDq2QyRcDdRDCoof6N978PXp9Zkcd80OLYKaxtn5LgJ1GRwrPEAzdwY8xqG0g5iFYXVaU-C-MK1J36Mk1eRaVI2VghmwD_EltdkCjq1CM4QwtdlSMuxlXkZGRgvFytgPU8dAbR3EbhgnSCNic0Bl4FhqkqCZDRIz7nMVyXsW9-gva_Ivu-wb9rdmtcCVYB0dySUJC0MQqtoNgZhqU9pQ8raAY-BPNgFZM-bX_51Hek4k_NVI1GKByKOqj8O2hiN-Y6LL_N331qiIM8Wy6mjoqHbkkWg"
+```
+
 # Hacer una llamada al API REST de intendencia clientes.
 
 ```
