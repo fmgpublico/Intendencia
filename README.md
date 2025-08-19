@@ -1,3 +1,14 @@
+
+# Pendiente
+
+- Botón volver en la página de alta y edición de cliente.
+- Búsqueda de clientes
+- Iconos. ¿Utilizar Fontawesome?
+- Internacionalización: ver https://vuejs.org/guide/reusability/plugins.html, donde crean un plugin para i18n.
+- Segurización. Configurar la segurización para que solo se puedan realizar ciertas acciones si se tienen los roles adecuados.
+- Tablas. ¿Utilizar alguna librería como Datatables?
+- Utilizar variables por ejemplo para las rutas del API REST o el servidor de autorización, y que cambien según el entorno (desarrollo, producción, etc). ¿Utilizar ficheros .env? ¿Crear un plugin?
+
 # Obtener un token de acceso.
 
 ```
