@@ -2,18 +2,59 @@
 # Pendiente
 
 - Botón volver en la página de alta y edición de cliente.
-- Búsqueda de clientes
+- Búsqueda de clientes. Se está intentando utilizar QueryDSL. En https://docs.spring.io/spring-data/jpa/reference/repositories/core-extensions.html#core.web.page indican que no se debe utilizar Page para devolver los resultados de una consulta porque podría cambiar. Recomiendan utilizar HATEOAS. Aunque indican que en las versiones más recientes de Spring Data hay un mecanismo de visualización de páginas mejorado.
 - Iconos. ¿Utilizar Fontawesome?
 - Internacionalización: ver https://vuejs.org/guide/reusability/plugins.html, donde crean un plugin para i18n.
+- REST API: hacer que sea realmente un API REST utilizando HATEOAS. Ver "Building REST services with Spring" en https://spring.io/guides/tutorials/rest
+- Segurización. Realizar el refresco del token de acceso.
+- Segurización. ¿Cómo detectar que el usuario no está autenticado para poder redirigir a la página de autenticación?
 - Segurización. Configurar la segurización para que solo se puedan realizar ciertas acciones si se tienen los roles adecuados.
 - Tablas. ¿Utilizar alguna librería como Datatables?
 - Utilizar variables por ejemplo para las rutas del API REST o el servidor de autorización, y que cambien según el entorno (desarrollo, producción, etc). ¿Utilizar ficheros .env? ¿Crear un plugin?
+- Validaciones en los DTO.
+
+# Páginas de la aplicación
+
+- Página de login
+Tendrá campos usuario y contraseña.
+Al hacer submit se hace una petición POST a Keycloak para obtener un token JWT. Se pasan los datos del cliente Keycloak de intendencia y el usuario/contraseña que introduzca el usuario.
+
+- Página de listado de clientes
+Hacer un listado básico.
+Campos a mostrar:
+	- UUID
+	- nombre
+
+- Página de detalle de un cliente	
+Campos a mostrar:
+	- UUID
+	- nombre
+	- correo electrónico
+	
+Tendrá una pestaña "Productos bancarios". Al pulsarla llevará a una página con un listado de los productos bancarios.
+
+- Página de productos bancarios
+Hacer un listado básico.
+Campos a mostrar:
+	- Nombre banco
+	- 
 
 # Obtener un token de acceso.
 
 ```
 curl -X POST "http://localhost:9090/realms/intendencia/protocol/openid-connect/token" --header "Content-Type: application/x-www-form-urlencoded" --data-urlencode "grant_type=password" --data-urlencode "client_id=intendencia" --data-urlencode "client_secret=7ZnfuQRWyUTgmlo3kfbTioBVyRLuuCnh" --data-urlencode "username=intendencia1" --data-urlencode "password=Cgb.12345"
 ```
+Se obtiene:
+{
+	"access_token": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJpQmJCNWdxbWI2RGNSY0VCZUNDMkNSeUFwbkhQczZVVFo0Q1k3emlmTnV3In0.eyJleHAiOjE3NTU4NTIwMDQsImlhdCI6MTc1NTg1MTcwNCwianRpIjoib25ydHJvOjVjMDgzNTBkLTA3Y2MtNGNkNi1iZDJkLTk5NzU5MjIwODNkNiIsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6OTA5MC9yZWFsbXMvaW50ZW5kZW5jaWEiLCJhdWQiOiJhY2NvdW50Iiwic3ViIjoiNmNhNmJlNjItZWFkMi00YmU2LTlmNzItMzhlMGM1OWEzOTc2IiwidHlwIjoiQmVhcmVyIiwiYXpwIjoiaW50ZW5kZW5jaWEiLCJzaWQiOiIzZDMwZWUwNS0xNDZjLTRkOTUtOWU0OS1kNDc2OWIwYjk4MmIiLCJhY3IiOiIxIiwiYWxsb3dlZC1vcmlnaW5zIjpbIioiXSwicmVhbG1fYWNjZXNzIjp7InJvbGVzIjpbIm9mZmxpbmVfYWNjZXNzIiwidW1hX2F1dGhvcml6YXRpb24iLCJkZWZhdWx0LXJvbGVzLWludGVuZGVuY2lhIl19LCJyZXNvdXJjZV9hY2Nlc3MiOnsiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl19LCJpbnRlbmRlbmNpYSI6eyJyb2xlcyI6WyJDTElFTlRFU19FTElNSU5BUiJdfX0sInNjb3BlIjoiZW1haWwgcHJvZmlsZSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJpbnRlbmRlbmNpYTEiLCJlbWFpbCI6ImZtYXJ0aW5AZXNsYS5jb20ifQ.igdwdIRLXTR_OgZ7ejU8Dq-AS84qtB8PEvbgQtoAL1y8ifRsUh2uY1mcFVFtgl7Yk2_aCRrj5UjSNeICrl6LnJZk-JDxXrG-4t2IBWg-fDU5_ERduOsoE5m6VJ5brvvAMuHfjGh2SChfJI1uKYLFmgZZsftm7Tm1dpmyE7fTpsVeCzluM5ObgMzWx2ZonbmzErYanUjgPlLhiw5hfXSX1lsMQ9URBXAhDvLllUxwRPrXtcg5HopY_T8jbw5S5E54av3d5GLf0M4v8PvZXRdXVJhTB0USDAtyrjWRZErL0WY8Rlg1RmesHbEOYe9Gr2z_KXBcnuBVjcjLCbqSBuBQFQ",
+	"expires_in": 300,
+	"refresh_expires_in": 1800,
+	"refresh_token": "eyJhbGciOiJIUzUxMiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJmYjdlNmZhOC0wM2Y0LTQwMWYtODBiOS04YmVkODcyYmUyZGIifQ.eyJleHAiOjE3NTU4NTM1MDQsImlhdCI6MTc1NTg1MTcwNCwianRpIjoiNDY4NzEyNjctNTUyNC00ZjgwLTk5ZTMtMWIwZTY5ZjAzZTQyIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo5MDkwL3JlYWxtcy9pbnRlbmRlbmNpYSIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6OTA5MC9yZWFsbXMvaW50ZW5kZW5jaWEiLCJzdWIiOiI2Y2E2YmU2Mi1lYWQyLTRiZTYtOWY3Mi0zOGUwYzU5YTM5NzYiLCJ0eXAiOiJSZWZyZXNoIiwiYXpwIjoiaW50ZW5kZW5jaWEiLCJzaWQiOiIzZDMwZWUwNS0xNDZjLTRkOTUtOWU0OS1kNDc2OWIwYjk4MmIiLCJzY29wZSI6ImJhc2ljIGVtYWlsIHNlcnZpY2VfYWNjb3VudCBhY3Igd2ViLW9yaWdpbnMgcHJvZmlsZSByb2xlcyJ9.1dW8ZSql0wgv6izmLMEVcI0Z7U1K4PLXzPU5ovwMaUtXui4fPh9HdCaeKgiAlsWvLFqs2VNgAevyaGj7ISK4nw",
+	"token_type": "Bearer",
+	"not-before-policy": 0,
+	"session_state": "3d30ee05-146c-4d95-9e49-d4769b0b982b",
+	"scope": "email profile"
+}
 
 # Refrescar un token de acceso
 
@@ -30,11 +71,7 @@ Devuelve un nuevo token de acceso.
 En el parámetro de la petición "token" se puede poner un token de acceso o uno de refresco.
 
 ```
-curl -X POST "http://localhost:9090/realms/intendencia/protocol/openid-connect/token/introspect" --header "Content-Type: application/x-www-form-urlencoded" --data-urlencode "grant_type=password" --data-urlencode "client_id=intendencia" --data-urlencode "client_secret=7ZnfuQRWyUTgmlo3kfbTioBVyRLuuCnh" --data-urlencode "username=intendencia1" --data-urlencode "password=Cgb.12345" --data-urlencode "token=eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJpQmJCNWdxbWI2RGNSY0VCZUNDMkNSeUFwbkhQczZVVFo0Q1k3emlmTnV3In0.eyJleHAiOjE3NTQ2MzY4MDYsImlhdCI6MTc1NDYzNjUwNiwianRpIjoib25ydHJvOmQ3NGYxYjkzLTk5ZTAtNGM5OC05MTZhLTkzOTZhZmM1MTEyYyIsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6OTA5MC9yZWFsbXMvaW50ZW5kZW5jaWEiLCJhdWQiOiJhY2NvdW50Iiwic3ViIjoiNmNhNmJlNjItZWFkMi00YmU2LTlmNzItMzhlMGM1OWEzOTc2IiwidHlwIjoiQmVhcmVyIiwiYXpwIjoiaW50ZW5kZW5jaWEiLCJzaWQiOiJmOWQ1NTZkZS1mM2U3LTQ0MDQtYjI3MS02Yjg5MjY3NTg4M2YiLCJhY3IiOiIxIiwiYWxsb3dlZC1vcmlnaW5zIjpbImh0dHA6Ly9sb2NhbGhvc3Q6ODA4MiJdLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsib2ZmbGluZV9hY2Nlc3MiLCJ1bWFfYXV0aG9yaXphdGlvbiIsImRlZmF1bHQtcm9sZXMtaW50ZW5kZW5jaWEiXX0sInJlc291cmNlX2FjY2VzcyI6eyJhY2NvdW50Ijp7InJvbGVzIjpbIm1hbmFnZS1hY2NvdW50IiwibWFuYWdlLWFjY291bnQtbGlua3MiLCJ2aWV3LXByb2ZpbGUiXX19LCJzY29wZSI6ImVtYWlsIHByb2ZpbGUiLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwicHJlZmVycmVkX3VzZXJuYW1lIjoiaW50ZW5kZW5jaWExIiwiZW1haWwiOiJmbWFydGluQGVzbGEuY29tIn0.PF4wjqPiqeafwzzlsRwIWNYe8xQT99Cc4XIkDLGen2UOifDhHkOhk6EU9weH-a7mo9WUxIGgFI74JxWD6jUFibYz6jmmoVz9RGDBYNru6tnUm-0qT6dtO1qFM7rT6XZuGC4P2x95MvXbc8zDU1obP9vhlykBmofcNMEECrOnUgzgikW_HrfhtEYOQimNeAemyvN8BdWdDz4FP7tsLFePRJgymfHW5_h95EpppXRMDoBirq5zQ1UHvs8__bwNRuUp-L7AjWOrOhAOUzFHF5kQu-dyPR8px05Jd0kY-zVZNL9cMfme99L09PTa8Kf7zA4EeLgAHfGeqEvxmZsfR8u35Q"
-```
-
-```
-curl -X POST "http://localhost:9090/realms/intendencia/protocol/openid-connect/token/introspect" --header "Content-Type: application/x-www-form-urlencoded" --data-urlencode "grant_type=password" --data-urlencode "client_id=intendencia" --data-urlencode "client_secret=7ZnfuQRWyUTgmlo3kfbTioBVyRLuuCnh" --data-urlencode "username=intendencia1" --data-urlencode "password=Cgb.12345" --data-urlencode "token=eyJhbGciOiJIUzUxMiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJmYjdlNmZhOC0wM2Y0LTQwMWYtODBiOS04YmVkODcyYmUyZGIifQ.eyJleHAiOjE3NTQ2MzgzMDYsImlhdCI6MTc1NDYzNjUwNiwianRpIjoiNDMyMjgxNjQtODBiMC00MGY0LWE2MzctZWRjMDUzMmM5NDhjIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo5MDkwL3JlYWxtcy9pbnRlbmRlbmNpYSIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6OTA5MC9yZWFsbXMvaW50ZW5kZW5jaWEiLCJzdWIiOiI2Y2E2YmU2Mi1lYWQyLTRiZTYtOWY3Mi0zOGUwYzU5YTM5NzYiLCJ0eXAiOiJSZWZyZXNoIiwiYXpwIjoiaW50ZW5kZW5jaWEiLCJzaWQiOiJmOWQ1NTZkZS1mM2U3LTQ0MDQtYjI3MS02Yjg5MjY3NTg4M2YiLCJzY29wZSI6ImJhc2ljIGVtYWlsIHNlcnZpY2VfYWNjb3VudCBhY3Igd2ViLW9yaWdpbnMgcHJvZmlsZSByb2xlcyJ9.EQxlUxaXZPAtj9BOYYbjaf_xsNsjlxKWAzQdrNqALCqj2ZNmGoe45IS8CFu5bzIicLdftGLLJnmyFeeD6QTUSg"
+curl -X POST "http://localhost:9090/realms/intendencia/protocol/openid-connect/token/introspect" --header "Content-Type: application/x-www-form-urlencoded" --data-urlencode "client_id=intendencia" --data-urlencode "client_secret=7ZnfuQRWyUTgmlo3kfbTioBVyRLuuCnh" --data-urlencode "token=eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJpQmJCNWdxbWI2RGNSY0VCZUNDMkNSeUFwbkhQczZVVFo0Q1k3emlmTnV3In0.eyJleHAiOjE3NTYyOTMwODEsImlhdCI6MTc1NjI5MzAyMSwianRpIjoib25ydHJvOmZlNDgzNTg0LTliZDQtNGE0Zi05OGFiLWVkZDExOTQ2YzMyNyIsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6OTA5MC9yZWFsbXMvaW50ZW5kZW5jaWEiLCJhdWQiOiJhY2NvdW50Iiwic3ViIjoiNmNhNmJlNjItZWFkMi00YmU2LTlmNzItMzhlMGM1OWEzOTc2IiwidHlwIjoiQmVhcmVyIiwiYXpwIjoiaW50ZW5kZW5jaWEiLCJzaWQiOiI5NDhjNmU0ZC1iZWU0LTQ4YmEtYjU2NC1jNzE4YTA1Mjc5ZDgiLCJhY3IiOiIxIiwiYWxsb3dlZC1vcmlnaW5zIjpbImh0dHA6Ly9sb2NhbGhvc3Q6NTE3MyJdLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsib2ZmbGluZV9hY2Nlc3MiLCJ1bWFfYXV0aG9yaXphdGlvbiIsImRlZmF1bHQtcm9sZXMtaW50ZW5kZW5jaWEiXX0sInJlc291cmNlX2FjY2VzcyI6eyJhY2NvdW50Ijp7InJvbGVzIjpbIm1hbmFnZS1hY2NvdW50IiwibWFuYWdlLWFjY291bnQtbGlua3MiLCJ2aWV3LXByb2ZpbGUiXX0sImludGVuZGVuY2lhIjp7InJvbGVzIjpbIkNMSUVOVEVTX0VMSU1JTkFSIl19fSwic2NvcGUiOiJlbWFpbCBwcm9maWxlIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsInByZWZlcnJlZF91c2VybmFtZSI6ImludGVuZGVuY2lhMSIsImVtYWlsIjoiZm1hcnRpbkBlc2xhLmNvbSJ9.hwP1XnSvvL29QnBCjXpGuW-fkTBXKM5z5W_--0NHqfeO9e4nSzEcRshcL2WgrVKMcPFkJwDZqtLnQ-34sQki_O8qvz059f26RwUjeW2pBPNxtYwvFXy_H2WETHdb-DGYLtWGdivJybtUILT5sCkhaV3WvSCPUJ0jz-zy3xaWod4IgSSy5-Dn7sgc2tpUOYEwDuWvcRmy7n34UwUA0_FXKKIse6Tu0ZcAIsdW9GAEdHSZ5zm_MtdC8KTca54r2-X-n5VPv3dM4v24mt2qtsq66Fc7lfnNvrgOPuxdI5swrruuxs-ELVts2FBSVGl3iBDlTcZP21WXac64G7BtOUdVOA" 
 ```
 
 Si el token no está activo devuelve:
@@ -202,3 +239,9 @@ En una página dicen que hay que incluir una dependencia del API JOSE para proce
 
 
 En https://dzone.com/articles/spring-boot-3-keycloak implementan un converter para el token JWT.
+
+# Copia de seguridad de la base de datos
+
+```
+"C:\Entorno\PostgreSQL\16\bin\pg_dump.exe" --host localhost --port 5416 --username postgres -W --format custom --blobs --verbose --file "C:\borrar\intendencia_clientes_20250825.sql" intendencia_clientes
+```
