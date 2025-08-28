@@ -30,7 +30,6 @@ Campos a mostrar:
 	- UUID
 	- nombre
 	- correo electrónico
-	
 Tendrá una pestaña "Productos bancarios". Al pulsarla llevará a una página con un listado de los productos bancarios.
 
 - Página de productos bancarios
