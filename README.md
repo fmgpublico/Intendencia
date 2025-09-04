@@ -119,8 +119,16 @@ En una página dicen que hay que incluir una dependencia del API JOSE para proce
 
 En https://dzone.com/articles/spring-boot-3-keycloak implementan un converter para el token JWT.
 
-# Copia de seguridad de la base de datos
+# Copia de seguridad de las bases de datos
 
+- intendencia_clientes
 ```
-"C:\Entorno\PostgreSQL\16\bin\pg_dump.exe" --host localhost --port 5416 --username postgres -W --format custom --blobs --verbose --file "C:\borrar\intendencia_clientes_20250825.sql" intendencia_clientes
+"C:\Entorno\PostgreSQL\16\bin\pg_dump.exe" --host localhost --port 5416 --username postgres -W --format custom --blobs --verbose --file "C:\borrar\intendencia_clientes_20250828.sql" intendencia_clientes
 ```
+
+- intendencia_productos_bancarios
+```
+"C:\Entorno\PostgreSQL\16\bin\pg_dump.exe" --host localhost --port 5416 --username postgres -W --format custom --blobs --verbose --file "C:\borrar\intendencia_clientes_20250828.sql" intendencia_productos_bancarios
+```
+
+"C:\Entorno\PostgreSQL\16\bin\pg_dump.exe" --host serverjava --port 5416 --username postgres -W --format custom --blobs --verbose --file "C:\borrar\keycloakdev_20250829.sql" keycloakdev
