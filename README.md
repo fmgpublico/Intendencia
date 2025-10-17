@@ -133,4 +133,8 @@ set FECHA=%date:~-4,4%%date:~-7,2%%date:~-10,2%
 "C:\Entorno\PostgreSQL\16\bin\pg_dump.exe" --host localhost --port 5416 --username postgres -W --format custom --blobs --verbose --file "C:\borrar\intendencia_productos_bancarios_%FECHA%.sql" intendencia_productos_bancarios
 ```
 
-"C:\Entorno\PostgreSQL\16\bin\pg_dump.exe" --host serverjava --port 5416 --username postgres -W --format custom --blobs --verbose --file "C:\borrar\keycloakdev_20250829.sql" keycloakdev
+- Keycloak
+```
+set FECHA=%date:~-4,4%%date:~-7,2%%date:~-10,2%
+"C:\Entorno\PostgreSQL\16\bin\pg_dump.exe" --host serverjava --port 5416 --username postgres -W --format custom --blobs --verbose --file "C:\borrar\keycloakdev_%FECHA%.sql" keycloakdev
+```
