@@ -119,7 +119,7 @@ En una página dicen que hay que incluir una dependencia del API JOSE para proce
 
 En https://dzone.com/articles/spring-boot-3-keycloak implementan un converter para el token JWT.
 
-# Copia de seguridad de las bases de datos
+# Copia de seguridad y restauración de las bases de datos
 
 - intendencia_clientes
 ```
@@ -138,3 +138,59 @@ set FECHA=%date:~-4,4%%date:~-7,2%%date:~-10,2%
 set FECHA=%date:~-4,4%%date:~-7,2%%date:~-10,2%
 "C:\Entorno\PostgreSQL\16\bin\pg_dump.exe" --host serverjava --port 5416 --username postgres -W --format custom --blobs --verbose --file "C:\borrar\keycloakdev_%FECHA%.sql" keycloakdev
 ```
+
+```
+"C:\Entorno\PostgreSQL\16\bin\pg_restore.exe" --host 192.168.0.16 --port 5418 --username postgres -W --format custom --blobs --verbose --file "C:\borrar\keycloakdev_%FECHA%.sql"
+```
+
+# Restauración de las bases de datos en el contenedor PostgreSQL en la máquina Fedora Linux
+
+- Se copia el fichero con la copia de seguridad de la BBDD intendencia_clientes en el contenedor. Se llama intendencia_clientes_20251209.sql.
+
+podman cp ~/compartida/equipo.paco/intendencia_clientes_20251209.sql PostgreSQL.18:/var/lib/postgresql
+
+- Dentro del contenedor se crea un fichero /var/lib/postgresql/CREATE_BBDD_intendencia_clientes.sql con la sentencia para crear la BBDD:
+
+CREATE DATABASE intendencia_clientes
+WITH
+OWNER = postgres
+ENCODING = 'UTF8'
+LC_COLLATE = 'es_ES.utf8'
+LC_CTYPE = 'es_ES.utf8'
+TABLESPACE = pg_default
+CONNECTION LIMIT = -1
+TEMPLATE=template0;
+
+- Dentro del contenedor se asigna permiso de ejecución al usuario del script y se ejectua:
+
+chmod u+x /var/lib/postgresql/CREATE_BBDD_intendencia_clientes.sql
+psql -U postgres -f /var/lib/postgresql/CREATE_BBDD_intendencia_clientes.sql
+
+- Dentro del contenedor se restaura la BBDD intendencia_clientes:
+
+pg_restore --username postgres --password --dbname intendencia_clientes --verbose /var/lib/postgresql/intendencia_clientes_20251209.sql
+
+- Se copia el fichero con la copia de seguridad de la BBDD intendencia_clientes en el contenedor. Se llama intendencia_productos_bancarios_20251209.sql.
+
+podman cp ~/compartida/equipo.paco/intendencia_productos_bancarios_20251209.sql PostgreSQL.18:/var/lib/postgresql
+
+- Dentro del contenedor se crea un fichero /var/lib/postgresql/CREATE_BBDD_intendencia_productos_bancarios.sql para crear la BBDD intendencia_clientes:
+
+CREATE DATABASE intendencia_productos_bancarios
+WITH
+OWNER = postgres
+ENCODING = 'UTF8'
+LC_COLLATE = 'es_ES.utf8'
+LC_CTYPE = 'es_ES.utf8'
+TABLESPACE = pg_default
+CONNECTION LIMIT = -1
+TEMPLATE=template0;
+
+- Dentro del contenedor se asigna permiso de ejecución al usuario del script y se ejectua:
+
+chmod u+x /var/lib/postgresql/CREATE_BBDD_intendencia_productos_bancarios.sql
+psql -U postgres -f /var/lib/postgresql/CREATE_BBDD_intendencia_productos_bancarios.sql
+
+- Dentro del contenedor se restaura la BBDD intendencia_productos_bancarios:
+
+pg_restore --username postgres --password --dbname intendencia_productos_bancarios --verbose /var/lib/postgresql/intendencia_productos_bancarios_20251209.sql
