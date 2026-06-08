@@ -194,3 +194,86 @@ psql -U postgres -f /var/lib/postgresql/CREATE_BBDD_intendencia_productos_bancar
 - Dentro del contenedor se restaura la BBDD intendencia_productos_bancarios:
 
 pg_restore --username postgres --password --dbname intendencia_productos_bancarios --verbose /var/lib/postgresql/intendencia_productos_bancarios_20251209.sql
+
+
+# Servicio para arrancar automáticamente el contenedor PostgreSQL.18
+
+Se crea un servicio para que se arranque el contenedor PostgreSQL.18 automáticamente al iniciar la máquina sin que se tenga que autenticar el usuario.
+
+El contenedor es rootless. Fue creado por el usuario paco. Por esto debe usarse un servicio de usuario en vez de uno del sistema (estaría en /etc/systemd/system).
+
+Se crea la unidad .config/systemd/user/postgresql18-container.service con este contenido:
+
+
+[Unit]
+Description=Contenedor PostgreSQL 18
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/bin/podman start PostgreSQL.18
+ExecStop=/usr/bin/podman stop -t 10 PostgreSQL.18
+
+[Install]
+WantedBy=default.target
+
+
+Se recargan los servicios, se habilita el servicio nuevo y se reinicia:
+systemctl --user daemon-reload
+systemctl --user disable postgresql18-container.service
+systemctl --user enable postgresql18-container.service
+systemctl --user restart postgresql18-container.service
+
+systemctl --user status postgresql18-container.service
+systemctl --user is-enabled postgresql18-container.service
+systemctl --user is-active postgresql18-container.service
+
+systemctl --user list-unit-files | grep postgresql18
+systemctl --user list-dependencies default.target | grep postgresql
+systemctl --user list-dependencies postgresql18-container.service
+
+-- Para ver si la unidad tiene errore:
+systemd-analyze verify .config/systemd/user/postgresql18-container.service
+
+
+-- Si el objetivo es que el contenedor arranque automáticamente incluso sin iniciar sesión como usuario paco, conviene usar lingering:
+sudo loginctl enable-linger paco
+
+loginctl show-user paco -p Linger
+
+podman ps -a
+
+
+# Servicio para arrancar automáticamente el contenedor Keycloak.26.4.0
+
+.config/systemd/user/keycloak-26-4-container.service
+
+
+[Unit]
+Description=Contenedor Keycloak.26.4.0
+Wants=network-online.target postgresql18-container.service
+After=network-online.target postgresql18-container.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/bin/podman start Keycloak.26.4.0
+ExecStop=/usr/bin/podman stop -t 10 Keycloak.26.4.0
+
+[Install]
+WantedBy=default.target
+
+
+systemctl --user daemon-reload
+systemctl --user disable keycloak-26-4-container.service
+systemctl --user enable keycloak-26-4-container.service
+systemctl --user restart keycloak-26-4-container.service
+
+systemctl --user list-dependencies keycloak-26-4-container.service
+systemctl --user show keycloak-26-4-container.service -p After -p Wants
+
+systemctl --user status keycloak-26-4-container.service
+systemctl --user is-enabled keycloak-26-4-container.service
+systemctl --user is-active keycloak-26-4-container.service
