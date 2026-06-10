@@ -124,19 +124,19 @@ En https://dzone.com/articles/spring-boot-3-keycloak implementan un converter pa
 - intendencia_clientes
 ```
 set FECHA=%date:~-4,4%%date:~-7,2%%date:~-10,2%
-"C:\Entorno\PostgreSQL\16\bin\pg_dump.exe" --host localhost --port 5416 --username postgres -W --format custom --blobs --verbose --file "C:\borrar\intendencia_clientes_%FECHA%.sql" intendencia_clientes
+"C:\Entorno\PostgreSQL\18\bin\pg_dump.exe" --host 192.168.0.16 --port 5418 --username postgres -W --format custom --blobs --verbose --file "C:\borrar\intendencia_clientes_%FECHA%.sql" intendencia_clientes
 ```
 
 - intendencia_productos_bancarios
 ```
 set FECHA=%date:~-4,4%%date:~-7,2%%date:~-10,2%
-"C:\Entorno\PostgreSQL\16\bin\pg_dump.exe" --host localhost --port 5416 --username postgres -W --format custom --blobs --verbose --file "C:\borrar\intendencia_productos_bancarios_%FECHA%.sql" intendencia_productos_bancarios
+"C:\Entorno\PostgreSQL\18\bin\pg_dump.exe" --host 192.168.0.16 --port 5418 --username postgres -W --format custom --blobs --verbose --file "C:\borrar\intendencia_productos_bancarios_%FECHA%.sql" intendencia_productos_bancarios
 ```
 
 - Keycloak
 ```
 set FECHA=%date:~-4,4%%date:~-7,2%%date:~-10,2%
-"C:\Entorno\PostgreSQL\16\bin\pg_dump.exe" --host serverjava --port 5416 --username postgres -W --format custom --blobs --verbose --file "C:\borrar\keycloakdev_%FECHA%.sql" keycloakdev
+"C:\Entorno\PostgreSQL\18\bin\pg_dump.exe" --host 192.168.0.16 --port 5418 --username postgres -W --format custom --blobs --verbose --file "C:\borrar\keycloakdev_%FECHA%.sql" keycloakdev
 ```
 
 ```
@@ -277,3 +277,47 @@ systemctl --user show keycloak-26-4-container.service -p After -p Wants
 systemctl --user status keycloak-26-4-container.service
 systemctl --user is-enabled keycloak-26-4-container.service
 systemctl --user is-active keycloak-26-4-container.service
+
+
+# Instalar entorno
+
+-- Se crea un pod
+podman pod create --name PodIntendencia --network red-desarrollo
+
+-- Se crea el contenedor de PostgreSQL.18
+podman run --name PostgreSQL.18-2 -d -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=Cgb.12345 -p 15418:5432 --network red-desarrollo --pod PodIntendencia -v /var/opt/postres/data:/var/lib/data:Z sha256:f2ec0fa6de3e914eae01d5bfe558eef5f797908d97c8ce8442bc3862816f7827
+
+-- Se configura Keycloak como un proxy, sin necesidad de tener que instalar un Apache que haga de proxy inverso.
+-- Se configura la comunicación TLS, por lo que se indica KC_HTTP_ENABLED=false.
+-- Se establece el nombre del host keycloak.esla.com
+-- Se mapea el puerto 8443 al 8443 del contenedor, donde Keycloak escucha peticiones HTTPS.
+Podman se ejecuta en modo rootless.
+En Linux, los puertos inferiores a 1024 (80, 443, 25, etc.) son puertos privilegiados. Un usuario normal no puede abrirlos.
+Si se quiere usar el puerto 443 hay varias opciones:
+
+	- Opción 1: Permitir puertos privilegiados a usuarios normales
+	sudo sysctl -w net.ipv4.ip_unprivileged_port_start=443
+
+	Para hacerlo permanente:
+
+	echo 'net.ipv4.ip_unprivileged_port_start=443' | sudo tee /etc/sysctl.d/99-rootless-ports.conf
+	sudo sysctl --system
+
+	Después Podman rootless podrá publicar el 443.
+
+	- Opción 2: Ejecutar el contenedor como root
+
+	No suele ser la opción recomendada hoy en Fedora, porque pierdes parte de las ventajas de rootless Podman.
+
+	- Opción 3: Usar un proxy inverso en el host, como Apache HTTP Server o NGINX
+	Escuchará en el 443 del host y reenvíará al puerto alto (8443) donde escucha Keycloak.
+	El proceso de Apache se inicia como root, abre el puerto 443 y después cambia al usuario de servicio (normalmente apache). 
+	Por tanto, sí puede escuchar en el puerto 443 aunque tu contenedor Keycloak esté ejecutándose como usuario normal.
+
+-- Se arranca con start, no con start-dev. start-dev es para desarrollo. No realiza comprobaciones tan extricta como con start. Para HTTPS es mejor ejecutarlo con start.
+
+podman run --name=Keycloak.26.4.0-2 -p 8443:8443 -d --network red-desarrollo --pod PodIntendencia -v /home/paco/SSL:/opt/keycloak/certs:Z -e KC_BOOTSTRAP_ADMIN_USERNAME=admin -e KC_BOOTSTRAP_ADMIN_PASSWORD=admin -e KC_DB=postgres -e KC_DB_URL=jdbc:postgresql://PostgreSQL.18:5432/keycloakdev?currentSchema=keycloakdev,public -e KC_DB_USERNAME=postgres -e KC_DB_PASSWORD=Cgb.12345 -e KC_HTTP_ENABLED=false -e KC_HTTPS_CERTIFICATE_FILE=/opt/keycloak/certs/SSL8990251.chain.cer -e KC_HTTPS_CERTIFICATE_KEY_FILE=/opt/keycloak/certs/SSL8990251.key -e KC_HOSTNAME=keycloak.esla.com sha256:ad01f352589657a2d32886b9e4018640b24b7c0a88496ea6ddf023e92c4576ed start
+8a0a794071380458997cfdae9c109a7ac1ac92bb2c15e0f1b32ebc03c038df69
+
+sudo firewall-cmd --add-port=8443/tcp --permanent
+sudo firewall-cmd --reload
