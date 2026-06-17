@@ -124,46 +124,96 @@ En https://dzone.com/articles/spring-boot-3-keycloak implementan un converter pa
 - Desde Windows
 
     - intendencia_clientes
-    ```
-    set FECHA=%date:~-4,4%%date:~-7,2%%date:~-10,2%
-    "C:\Entorno\PostgreSQL\18\bin\pg_dump.exe" --host 192.168.0.16 --port 5418 --username postgres -W --format custom --blobs --verbose --file "C:\borrar\intendencia_clientes_%FECHA%.sql" intendencia_clientes
-    ```
+
+        `
+        set FECHA=%date:~-4,4%%date:~-7,2%%date:~-10,2%
+        `
+        `
+        "C:\Entorno\PostgreSQL\18\bin\pg_dump.exe" --host 192.168.0.16 --port 5418 --username postgres -W --format custom --blobs --verbose --file "C:\borrar\intendencia_clientes_%FECHA%.sql" intendencia_clientes
+        `
+        
+        `
+        C:\Entorno\PostgreSQL\18\bin\pg_restore.exe --host=192.168.0.16 --port=5418 --username=postgres -W -C -d postgres D:\compartida\intendencia_clientes_20260611125335.sql
+        `
+
+        pg_restore no ejecuta automáticamente el CREATE DATABASE salvo que se le indique que restaure también los objetos de nivel base de datos. Esto se hace con "-C", con lo que crea la base de datos definida en el dump.
+
+        Con "-d postgres" se hace que se conecte primero a una base ya existente (postgres) para poder ejecutar el CREATE DATABASE. 
 
     - intendencia_productos_bancarios
-    ```
-    set FECHA=%date:~-4,4%%date:~-7,2%%date:~-10,2%
-    "C:\Entorno\PostgreSQL\18\bin\pg_dump.exe" --host 192.168.0.16 --port 5418 --username postgres -W --format custom --blobs --verbose --file "C:\borrar\intendencia_productos_bancarios_%FECHA%.sql" intendencia_productos_bancarios
-    ```
+    
+        `
+        set FECHA=%date:~-4,4%%date:~-7,2%%date:~-10,2%
+        `
+        `        
+        "C:\Entorno\PostgreSQL\18\bin\pg_dump.exe" --host 192.168.0.16 --port 5418 --username postgres -W --format custom --blobs --verbose --file "C:\borrar\intendencia_productos_bancarios_%FECHA%.sql" intendencia_productos_bancarios
+        `
+
+        `
+        C:\Entorno\PostgreSQL\18\bin\pg_restore.exe --host=192.168.0.16 --port=5418 --username=postgres -W -C -d postgres D:\compartida\intendencia_productos_bancarios_20260611125424.sql
+        `
 
     - Keycloak
-    ```
-    set FECHA=%date:~-4,4%%date:~-7,2%%date:~-10,2%
-    "C:\Entorno\PostgreSQL\18\bin\pg_dump.exe" --host 192.168.0.16 --port 5418 --username postgres -W --format custom --blobs --verbose --file "C:\borrar\keycloakdev_%FECHA%.sql" keycloakdev
-    ```
+    
+        `
+        set FECHA=%date:~-4,4%%date:~-7,2%%date:~-10,2%
+        `
+        `  
+        "C:\Entorno\PostgreSQL\18\bin\pg_dump.exe" --host 192.168.0.16 --port 5418 --username postgres -W --format custom --blobs --verbose --file "C:\borrar\keycloakdev_%FECHA%.sql" keycloakdev
+        `
 
-    ```
-    "C:\Entorno\PostgreSQL\16\bin\pg_restore.exe" --host 192.168.0.16 --port 5418 --username postgres -W --format custom --blobs --verbose --file "C:\borrar\keycloakdev_%FECHA%.sql"
-    ```
+        `
+        "C:\Entorno\PostgreSQL\16\bin\pg_restore.exe" --host 192.168.0.16 --port 5418 --username postgres -W --format custom --blobs --verbose --file "C:\borrar\keycloakdev_%FECHA%.sql"
+        `
 
 - Desde el contenedor PostgreSQL.18
 
     - intendencia_clientes
-    ```
-    printf -v FECHA '%(%Y%m%d%H%M%S)T'
-    pg_dump --host localhost --port 5432 --username postgres -W --format custom --blobs --verbose --file "/var/backups/intendencia_clientes_$FECHA.sql" intendencia_clientes
-    ```
+    
+        `
+        printf -v FECHA '%(%Y%m%d%H%M%S)T'
+        `
+        `
+        pg_dump --host localhost --port 5432 --username postgres -W --format custom --blobs --verbose --file "/var/backups/intendencia_clientes_$FECHA.sql" intendencia_clientes
+        `
 
     - intendencia_productos_bancarios
-    ```
-    printf -v FECHA '%(%Y%m%d%H%M%S)T'
-    pg_dump --host localhost --port 5432 --username postgres -W --format custom --blobs --verbose --file "/var/backups/intendencia_productos_bancarios_$FECHA.sql" intendencia_productos_bancarios
-    ```
+    
+        `
+        printf -v FECHA '%(%Y%m%d%H%M%S)T'
+        `
+        `
+        pg_dump --host localhost --port 5432 --username postgres -W --format custom --blobs --verbose --file "/var/backups/intendencia_productos_bancarios_$FECHA.sql" intendencia_productos_bancarios
+        `
 
     - Keycloak
-    ```
-    printf -v FECHA '%(%Y%m%d%H%M%S)T'
-    pg_dump --host localhost --port 5432 --username postgres -W --format custom --blobs --verbose --file "/var/backups/keycloakdev_$FECHA.sql" keycloakdev
-    ```
+    
+        - Realización de la copia de seguridad  
+
+            `
+            printf -v FECHA '%(%Y%m%d%H%M%S)T'
+            `
+
+            `
+            pg_dump --host localhost --port 5432 --username postgres -W --format custom --blobs --verbose --file "/var/backups/keycloakdev_$FECHA.sql" keycloakdev
+            `
+    
+        - Restauración de la copia de seguridad  
+
+            `
+            pg_restore -h localhost -p 5432 -U postgres -C -d postgres /var/backups/keycloakdev_20260609111240.sql
+            `
+        
+            El fichero keycloakdev_20260609111240.sql contiene la sentencia de creación de la base de datos:
+
+            `
+               CREATE DATABASE keycloakdev WITH TEMPLATE = template0 ENCODING = 'UTF8' LOCALE_PROVIDER = libc LOCALE = 'es_ES.utf8';
+            `
+
+            pg_restore no ejecuta automáticamente el CREATE DATABASE salvo que se le indique que restaure también los objetos de nivel base de datos. Esto se hace con "-C", con lo que crea la base de datos definida en el dump.
+
+            Con "-d postgres" se hace que se conecte primero a una base ya existente (postgres) para poder ejecutar el CREATE DATABASE.
+
 
 # Restauración de las bases de datos en el contenedor PostgreSQL en la máquina Fedora Linux
 
@@ -332,7 +382,7 @@ systemctl --user is-active keycloak-26-4-container.service
 - Se crea el contenedor de PostgreSQL 18
 
     `
-    podman run --name PostgreSQL.18-2 -d -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=Cgb.12345 -p 15418:5432 --network red-desarrollo --pod PodIntendencia -v /var/opt/postres/data:/var/lib/data:Z sha256:f2ec0fa6de3e914eae01d5bfe558eef5f797908d97c8ce8442bc3862816f7827
+    podman run --name PostgreSQL.18 -d -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=Progres.12345 -p 5418:5432 --network red-desarrollo --pod PodIntendencia -v /var/opt/postres/data:/var/lib/data:Z sha256:f2ec0fa6de3e914eae01d5bfe558eef5f797908d97c8ce8442bc3862816f7827
     `
 
     Se ve cómo se especifica la red y el pod.  
@@ -341,7 +391,7 @@ systemctl --user is-active keycloak-26-4-container.service
 - Se crea el contenedor Keycloak 26.4.0
 
     `
-    podman run --name=Keycloak.26.4.0-2 -p 8443:8443 -d --network red-desarrollo --pod PodIntendencia -v /home/paco/SSL:/opt/keycloak/certs:Z -e KC_BOOTSTRAP_ADMIN_USERNAME=admin -e KC_BOOTSTRAP_ADMIN_PASSWORD=admin -e KC_DB=postgres -e KC_DB_URL=jdbc:postgresql://PostgreSQL.18:5432/keycloakdev?currentSchema=keycloakdev,public -e KC_DB_USERNAME=postgres -e KC_DB_PASSWORD=Cgb.12345 -e KC_HTTP_ENABLED=false -e KC_HTTPS_CERTIFICATE_FILE=/opt/keycloak/certs/SSL8990251.chain.cer -e KC_HTTPS_CERTIFICATE_KEY_FILE=/opt/keycloak/certs/SSL8990251.key -e KC_HOSTNAME=keycloak.esla.com sha256:ad01f352589657a2d32886b9e4018640b24b7c0a88496ea6ddf023e92c4576ed start
+    podman run --name=Keycloak.26.4.0 -p 8443:8443 -d --network red-desarrollo --pod PodIntendencia -v /home/paco/SSL:/opt/keycloak/certs:Z -e KC_BOOTSTRAP_ADMIN_USERNAME=admin -e KC_BOOTSTRAP_ADMIN_PASSWORD=admin -e KC_DB=postgres -e KC_DB_URL=jdbc:postgresql://PostgreSQL.18:5432/keycloakdev?currentSchema=keycloakdev,public -e KC_DB_USERNAME=postgres -e KC_DB_PASSWORD=Progres.12345 -e KC_HTTP_ENABLED=false -e KC_HTTPS_CERTIFICATE_FILE=/opt/keycloak/certs/SSL8990251.chain.cer -e KC_HTTPS_CERTIFICATE_KEY_FILE=/opt/keycloak/certs/SSL8990251.key -e KC_HOSTNAME=keycloak.esla.com sha256:ad01f352589657a2d32886b9e4018640b24b7c0a88496ea6ddf023e92c4576ed start
     `
 
     Se explica la sentencia:
